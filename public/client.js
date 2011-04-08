@@ -17,9 +17,9 @@ $(document).ready(function() {
 function init() {
     // Gets the canvas element, and the size of the browser window
     var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-    var width = window.innerWidth;
-    var height = window.innerHeight;
+        ctx = canvas.getContext('2d');
+        width = window.innerWidth;
+        height = window.innerHeight;
 
     // Sets the canvas size to be the same as the browser size
     canvas.width = width;
@@ -31,9 +31,9 @@ function init() {
         'mousemove':  draw,
         'mouseup':    stopDraw,
         //FIXME These touchevents doesn't really work because touch also scrolls the page
-        'touchstart': startDraw,
-        'touchmove':  draw,
-        'touchend':   stopDraw
+        //'touchstart': startDraw,
+        //'touchmove':  draw,
+        //'touchend':   stopDraw
     });
  };
 
@@ -63,7 +63,6 @@ function draw(e) {
                         'toX'   : e.pageX,
                         'toY'   : e.pageY
                     });
-        
         this.X = e.pageX;
         this.Y = e.pageY;
     }

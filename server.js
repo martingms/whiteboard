@@ -1,3 +1,8 @@
+/*
+* Written by martingamm
+* at twitter and github
+*/
+
 var path = require('path'),
     http = require('http'),
     paperboy = require('paperboy'),
