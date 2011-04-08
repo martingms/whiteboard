@@ -8,7 +8,7 @@ var path = require('path'),
     paperboy = require('paperboy'),
     io = require('socket.io'),
 
-    PORT = 8003,
+    PORT = 80,
     WEBROOT = path.join(path.dirname(__filename), 'public');
 
 // Copied from the paperboy example at: https://github.com/felixge/node-paperboy
