@@ -30,10 +30,6 @@ function init() {
         'mousedown':  startDraw,
         'mousemove':  draw,
         'mouseup':    stopDraw,
-        //FIXME These touchevents doesn't really work because touch also scrolls the page
-        //'touchstart': startDraw,
-        //'touchmove':  draw,
-        //'touchend':   stopDraw
     });
  };
 
@@ -84,7 +80,6 @@ function drawData(data) {
         stroke();
     }
 };
-
 
 /* Socket.IO */
 var socket = new io.Socket();
