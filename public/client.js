@@ -31,7 +31,7 @@ function init() {
         'mousemove':  draw,
         'mouseup':    stopDraw,
     });
- };
+};
 
 // Triggered on mousedown, sets draw to true and updates X, Y values.
 // Since it was unclear to me, this in this context means the canvas element
