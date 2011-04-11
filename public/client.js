@@ -8,29 +8,68 @@
 // Run once the DOM is ready
 $(document).ready(function() {
     // Connects to socket.io on backend
-    socket.connect();
+    //socket.connect();
     // Inits canvas
     init();
 });
 
 // Initializes the canvas, is run on document.ready
 function init() {
+    //TODO rewrite this function to be more readable and less crappy
     // Gets the canvas element, and the size of the browser window
     var canvas = document.getElementById('canvas');
         ctx = canvas.getContext('2d');
         width = window.innerWidth;
         height = window.innerHeight;
+        tool = 'draw';
 
     // Sets the canvas size to be the same as the browser size
     canvas.width = width;
     canvas.height = height;
 
+    var bigcanvas = document.getElementById('bigcanvas');
+        bigctx = bigcanvas.getContext('2d');
+        bigcanvas.width = 3*width;
+        bigcanvas.height = 3*height;
+
     // Binds mouse and touch events to functions
     $(canvas).bind({
-        'mousedown':  startDraw,
-        'mousemove':  draw,
-        'mouseup':    stopDraw,
+        'mousedown' : mouseDown,
+        'mousemove' : mouseMove,
+        'mouseup'   : mouseUp,
     });
+
+    //TODO Rename these to a more fitting name
+    drawnX = -width;
+    drawnY = -height;
+};
+
+//TODO Rewrite these to case's, will get many more tools soon
+function mouseDown(e) {
+    if (tool === 'draw') {
+        startDraw(e);
+    }
+    else if (tool === 'move') {
+        startMove(e);
+    }
+};
+
+function mouseMove(e) {
+    if (tool === 'draw') {
+        doDraw(e);
+    }
+    else if (tool === 'move') {
+        doMove(e);
+    }
+};
+
+function mouseUp(e) {
+    if (tool === 'draw') {
+        stopDraw();
+    }
+    else if (tool === 'move') {
+        stopMove();
+    }
 };
 
 // Triggered on mousedown, sets draw to true and updates X, Y values.
@@ -42,23 +81,27 @@ function startDraw(e) {
 };
 
 // Triggered on mousemove, strokes a line between this.X/Y and e.pageX/Y
-function draw(e) {
+function doDraw(e) {
     if(this.draw) {
-        with(ctx) {
+        with(bigctx) {
             beginPath();
             lineWidth = 4;
             lineCap = 'round';
-            moveTo(this.X, this.Y);
-            lineTo(e.pageX, e.pageY);
+            moveTo(-drawnX + this.X, -drawnY + this.Y);
+            lineTo(-drawnX + e.pageX, -drawnY + e.pageY);
             stroke();
         }
+        ctx.drawImage(bigcanvas, drawnX, drawnY);
+
         // Sends the data to the server via socket.io
+        /*
         socket.send({
                         'fromX' : this.X,
                         'fromY' : this.Y,
                         'toX'   : e.pageX,
                         'toY'   : e.pageY
                     });
+        */
         this.X = e.pageX;
         this.Y = e.pageY;
     }
@@ -69,7 +112,32 @@ function stopDraw() {
     this.draw = false;
 };
 
+function startMove(e) {
+    this.move = true;
+    this.X = e.pageX;
+    this.Y = e.pageY;
+};
+
+function doMove(e) {
+    if (this.move) {
+        this.deltaX = e.pageX - this.X;
+        this.deltaY = e.pageY - this.Y;
+        drawnX = drawnX + this.deltaX;
+        drawnY = drawnY + this.deltaY;
+        ctx.fillStyle = "#eeeeee";
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(bigcanvas,drawnX,drawnY);
+        this.X = e.pageX;
+        this.Y = e.pageY;
+    }
+};
+
+function stopMove() {
+    this.move = false;
+};
+
 // Triggered when client recieves coordinate data from host
+/*
 function drawData(data) {
     with(ctx) {
         beginPath();
@@ -80,8 +148,10 @@ function drawData(data) {
         stroke();
     }
 };
+*/
 
 /* Socket.IO */
+/*
 var socket = new io.Socket();
 
 // Triggered when client connects with host 
@@ -98,3 +168,4 @@ socket.on('message', function(data) {
 socket.on('disconnect', function() {
     console.log('Connection lost');
 });
+*/

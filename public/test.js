@@ -12,35 +12,35 @@ function init() {
         
         width = canvas.width;
         height = canvas.height;
-        drawnX = 0;
-        drawnY = 0;
 
     var bigcanvas = document.getElementById('bigcanvas');
         bigctx = bigcanvas.getContext('2d');
-        bigcanvas.width = 5000;
-        bigcanvas.height = 5000;
+        bigcanvas.width = 3*width;
+        bigcanvas.height = 3*height;
 
     with(bigctx) {
         beginPath();
         lineWidth = 4;
         lineCap = 'round';
         moveTo(0,0);
-        lineTo(5000,5000);
+        lineTo(3*width,3*height);
         stroke();
         beginPath();
-        moveTo(5000,0);
-        lineTo(0,5000);
+        moveTo(3*width,0);
+        lineTo(0,3*height);
         stroke();
     }
+    drawnX = -width;
+    drawnY = -height;
     ctx.drawImage(bigcanvas,drawnX,drawnY);
     test();
 };
 
 function test() {
     $(canvas).bind({
-        'mousedown':  function(e){this.move=true;this.X=e.pageX;this.Y=e.pageY;},
-        'mousemove':  move,
-        'mouseup':    function(){this.move=false;},
+        'mousedown' : function(e){this.move=true;this.X=e.pageX;this.Y=e.pageY;},
+        'mousemove' : move,
+        'mouseup'   : function(){this.move=false;},
     });
 };
 
@@ -48,11 +48,11 @@ function move(e) {
     if (this.move) {
         this.deltaX = e.pageX - this.X;
         this.deltaY = e.pageY - this.Y;
-        ctx.fillStyle = "#eeeeee";
-        ctx.fillRect(0, 0, width, height);
-        ctx.drawImage(bigcanvas,drawnX+this.deltaX,drawnY+this.deltaY);
         drawnX = drawnX + this.deltaX;
         drawnY = drawnY + this.deltaY;
+        ctx.fillStyle = "#eeeeee";
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(bigcanvas,drawnX,drawnY);
         this.X = e.pageX;
         this.Y = e.pageY;
     }
