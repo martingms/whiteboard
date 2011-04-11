@@ -126,7 +126,7 @@ function doMove(e) {
         drawnY = drawnY + this.deltaY;
         ctx.fillStyle = "#eeeeee";
         ctx.fillRect(0, 0, width, height);
-        ctx.drawImage(bigcanvas,drawnX,drawnY);
+        ctx.drawImage(bigcanvas, drawnX, drawnY);
         this.X = e.pageX;
         this.Y = e.pageY;
     }

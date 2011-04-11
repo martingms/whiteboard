@@ -9,7 +9,7 @@ var path = require('path'),
     io = require('socket.io'),
 
     // Change to 8000-ish when developing
-    PORT = 8005,
+    PORT = 8006,
     WEBROOT = path.join(path.dirname(__filename), 'public');
 
 // Copied from the paperboy example at: https://github.com/felixge/node-paperboy
@@ -46,6 +46,7 @@ function log(statCode, url, ip, err) {
 };
 
 /* Socket.IO */
+/*
 var socket = io.listen(server);
 
 // Ghetto-db in the form of an array :p
@@ -67,4 +68,5 @@ socket.on('connection', function(client) {
     client.on('disconnect', function() {
  
     });
-}); 
+});
+*/
